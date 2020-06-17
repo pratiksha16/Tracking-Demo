@@ -7,23 +7,34 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    public static final String GOOGLE_ACCOUNT = "google_account";
+    private GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInOptions gso;
+    private Button signOut;
     private GoogleMap mMap;
     LocationManager locationmanager;
     LocationListener locationlistner;
@@ -46,6 +57,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        setContentView(R.layout.activity_profile);
+        signOut = findViewById(R.id.sign_out);
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          /*
+          Sign-out is initiated by simply calling the googleSignInClient.signOut API. We add a
+          listener which will be invoked once the sign out is the successful
+           */
+                mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //On Succesfull signout we navigate the user back to LoginActivity
+                        Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+
+        });
     }
 
 
@@ -67,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationChanged(Location location) {
                 Toast.makeText(MapsActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.clear();
+              //  mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(userLocation).title("Your location"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
 

@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void onLoggedIn(GoogleSignInAccount account) {
 
-            Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra(ProfileActivity.GOOGLE_ACCOUNT, account);
+            Intent intent = new Intent(this, MapsActivity.class);
+            intent.putExtra(MapsActivity.GOOGLE_ACCOUNT, account);
             startActivity(intent);
             finish();
 

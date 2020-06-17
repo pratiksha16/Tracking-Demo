@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileActivity extends AppCompatActivity {
+    /*
     public static final String GOOGLE_ACCOUNT = "google_account";
     private  GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
@@ -39,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
           Sign-out is initiated by simply calling the googleSignInClient.signOut API. We add a
           listener which will be invoked once the sign out is the successful
            */
+    /*
                 mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -55,5 +57,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     }
+    */
 
 }
